@@ -7,8 +7,9 @@ const arr2 = [2, 5, 6, 9, 12, 15];
 const binarySearch = (arr, target) => {
     let l = 0;
     let r = arr.length - 1;
+    let m;
     while (r >= l) {
-        let m = Math.floor((l + r) / 2);
+        m = Math.floor((r + l) / 2);
         if (arr[m] == target) return m;
         if (arr[m] < target) l = m + 1;
         else r = m - 1;
@@ -19,16 +20,18 @@ const binarySearch = (arr, target) => {
 // Bubble Sort:
 // Push max number to right side one by one.
 const bubbleSort = (arr) => {
-    console.log("Bubble Sort:");
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-        for (let j = 0; j < n - 1 - i; j++) {
+    let len = arr.length;
+    for (let i = 0; i < len - 1; i++) {
+        let isSwapped = false;
+        for (let j = 0; j < len - 1 - i; j++) {
             if (arr[j] > arr[j + 1]) {
                 let temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
+                isSwapped = true;
             }
         }
+        if (!isSwapped) break;
     }
     return arr;
 }
@@ -37,11 +40,15 @@ const bubbleSort = (arr) => {
 // Swap min value to left side one by one. 
 const selectionSort = (arr) => {
     console.log("Selection Sort:");
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
+    let len = arr.length;
+    for (let i = 0; i < len - 1; i++) {
+
         let min = i;
-        for (let j = i + 1; j < n; j++) {
-            if (arr[j] < arr[min]) min = j;
+
+        for (let j = i + 1; j < len; j++) {
+            if (arr[j] < arr[i]) {
+                min = j
+            }
         }
 
         if (min !== i) {
@@ -56,8 +63,8 @@ const selectionSort = (arr) => {
 // Insertion Sort:
 const insertionSort = (arr) => {
     console.log("Insertion Sort:");
-    let n = arr.length;
-    for (let i = 1; i < n; i++) {
+    let len = arr.length;
+    for (let i = 1; i < len; i++) {
         let curr = arr[i];
         let prev = i - 1;
         while (arr[prev] > curr && prev >= 0) {
@@ -73,14 +80,14 @@ const insertionSort = (arr) => {
 
 // Function to merge two sorted array:
 const merge = (a1, a2) => {
-    let m = a1.length;
-    let n = a2.length;
     let p1 = 0;
     let p2 = 0;
+    let m = a1.length;
+    let n = a2.length;
     let sort = [];
 
     for (let i = 0; i < m + n; i++) {
-        if (p2 >= n || a1[p1] < a2[p2] && p1 < m) {
+        if (p2 >= n || (a1[p1] < a2[p2] && p1 < m)) {
             sort[i] = a1[p1];
             p1++;
         } else {
@@ -94,10 +101,10 @@ const merge = (a1, a2) => {
 
 const mergeSort = (arr) => {
     if (arr.length <= 1) return arr;
-    let med = arr.length / 2;
-    let left = mergeSort(arr.slice(0, med));
-    let right = mergeSort(arr.slice(med));
-    return merge(left, right);
+    let mid = Math.floor(arr.length / 2);
+    let l = mergeSort(arr.slice(0, mid));
+    let r = mergeSort(arr.slice(mid));
+    return merge(l, r);
 }
 
 console.log(mergeSort(arr));
